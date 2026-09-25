@@ -65,8 +65,11 @@ Failures fall into two clear patterns.
   checks that still return 200 are 3 to 5 times slower than normal. svc-reports runs at
   about 650 ms normally and about 3,000 ms during its incident. These windows flap, so
   the longest unbroken run of failures is only 5 to 8 checks.
-- **Blips.** Single failed checks with healthy checks either side. 38 to 158 per file,
-  mostly on svc-reports.
+- **Blips.** A blip is a down slot that is not part of an incident — an isolated failure,
+  usually with healthy slots either side. This is the definition the dashboard uses and
+  counts (down slots, not clusters), because what an on-call reader wants is how many
+  isolated failures there were, not how many ways they clumped. 35 / 58 / 81 / 108 / 157
+  per file (9, 12, 14, 21, 30 day), mostly on svc-reports.
 
 # Assumptions
 
