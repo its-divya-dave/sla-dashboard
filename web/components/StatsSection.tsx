@@ -17,8 +17,10 @@ import {
   type Upload,
 } from "@/lib/types";
 
-// Per-service view row merged from the two stats views.
-interface MergedService extends ServiceStat, Partial<ServiceIncidentAgg> {}
+// Per-service view row merged from the two stats views. Intersection instead of
+// `extends` so the shared service_id key isn't declared twice with conflicting
+// optionality (ServiceStat requires it, Partial<> would make it optional).
+type MergedService = ServiceStat & Partial<Omit<ServiceIncidentAgg, "service_id">>;
 
 export default function StatsSection({ upload }: { upload: Upload }) {
   const [open, setOpen] = useState(true);
