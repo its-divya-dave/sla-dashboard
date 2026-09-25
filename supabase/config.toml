@@ -1,0 +1,13 @@
+# Supabase CLI project config. project_id is the local project name; the remote
+# project this repo is linked to lives in supabase/.temp/ (written by
+# `supabase link`) and is not a secret.
+project_id = "sla-dashboard"
+
+[functions.process-upload]
+# verify_jwt defaults to true, which makes the platform reject any request
+# without a valid Supabase Auth JWT. This project has no authentication in scope
+# (it is explicitly out of scope in the assignment), and the function is called
+# from a public browser upload form, so we turn JWT verification off. Writes are
+# still safe: the function is the only writer and uses the service-role key
+# server-side, while the anon key the browser holds has SELECT-only via RLS.
+verify_jwt = false
