@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js build output
+web/.next/
+web/out/
+web/build/
+.swc/
+
+# Production
+dist/
+
+# Environment variables — never commit secrets
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# .env.example is the checked-in template and IS tracked (negated below)
+!.env.example
+
+# Supabase CLI
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# Deno / Edge Function local cache
+supabase/functions/**/deno.lock
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing / coverage
+coverage/
+.nyc_output/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Vercel
+.vercel
