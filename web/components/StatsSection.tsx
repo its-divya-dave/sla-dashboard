@@ -229,7 +229,8 @@ function IncidentTimeline({
         {incidentCount} incident{incidentCount === 1 ? "" : "s"} account for{" "}
         {incidentDown} down slots; {blipDown} more are scattered single-check
         blips. Both count fully against the SLA — the noise is why every service
-        breaches. Tall bars are incidents; faint ticks are blips.
+        breaches. Full-height bars are incidents; the short faint ticks along
+        the bottom are blips.
       </div>
 
       {services.map((svc) => {
@@ -252,7 +253,13 @@ function IncidentTimeline({
               {items.map((i, idx) => {
                 const left = pct(i.started_at);
                 if (i.kind === "incident") {
-                  const width = Math.max(0.8, pct(i.ended_at) - left);
+                  // Width is the real span across the range, but a short incident
+                  // (svc-reports' 9 slots is ~0.3% of a 30-day range) would collapse
+                  // to a hairline. minWidth in px, not %, guarantees every incident
+                  // reads as a solid bar regardless of how brief it was. Full height
+                  // + solid fill is the second, size-independent signal that this is
+                  // an incident, not a blip — so they stay countable when they cluster.
+                  const width = pct(i.ended_at) - left;
                   return (
                     <div
                       key={idx}
@@ -261,15 +268,21 @@ function IncidentTimeline({
                         position: "absolute",
                         left: `${left}%`,
                         width: `${width}%`,
-                        top: 3,
-                        bottom: 3,
+                        minWidth: 6,
+                        top: 0,
+                        bottom: 0,
                         background: "var(--bad)",
                         borderRadius: 2,
+                        // A hairline divider so two incidents that touch on screen
+                        // still read as two bars, not one merged block.
+                        boxShadow: "0 0 0 1px #fff",
                       }}
                     />
                   );
                 }
-                // Blip: subordinate — thin, low-contrast, no label.
+                // Blip: subordinate. Short, low-contrast tick anchored to the bottom
+                // of the track, so it sits visibly below the full-height incident
+                // bars instead of competing with them on the same line.
                 return (
                   <div
                     key={idx}
@@ -278,9 +291,10 @@ function IncidentTimeline({
                       position: "absolute",
                       left: `${left}%`,
                       width: 2,
-                      top: 9,
-                      bottom: 9,
+                      height: 6,
+                      bottom: 2,
                       background: "#c2321f66",
+                      borderRadius: 1,
                     }}
                   />
                 );
