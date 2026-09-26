@@ -54,3 +54,7 @@ Thumbs.db
 
 .vercel
 .env*
+# Keep the checked-in template tracked; this negation must follow the .env* glob
+# above, since a later .gitignore pattern overrides an earlier one.
+!.env.example
+!web/.env.example
